@@ -3,8 +3,11 @@ from fastapi_mail import ConnectionConfig
 from config import settings
 
 
+# Load mail settings from application configuration.
 mail_settings = settings.mail
 
+
+# Configure the mail connection using FastAPI Mail.
 mail_config = ConnectionConfig(
     MAIL_USERNAME=mail_settings.MAIL_USERNAME,
     MAIL_PASSWORD=mail_settings.MAIL_PASSWORD,

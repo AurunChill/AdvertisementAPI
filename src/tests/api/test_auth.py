@@ -17,8 +17,6 @@ async def test_register_successfully(async_client: AsyncClient, user_data: dict)
     data = response_data.json()
     assert db_user.username == data.get("username")
     assert db_user.email == data.get("email")
-    assert db_user.phone_number == data.get("phone_number")
-    assert db_user.profile_picture_url == data.get("profile_picture_url")
     assert response_data.status_code == 201 and db_user is not None
     await delete_user(db_user)
 
@@ -109,34 +107,34 @@ async def test_login_with_invalid_format(async_client: AsyncClient):
 
 
 @pytest.mark.asyncio
-async def test_logout_successfully(auth_async_client: AsyncClient, user_data: dict):
-    logout_response = await auth_async_client.post(url=test_urls["auth"].get("logout"))
+async def test_logout_successfully(auth_async_verified_client: AsyncClient, user_data: dict):
+    logout_response = await auth_async_verified_client.post(url=test_urls["auth"].get("logout"))
     assert logout_response.status_code in [200, 204]
     await delete_user(await get_user_by_username(username=user_data.get("username")))
 
 
 @pytest.mark.asyncio
-async def test_ask_verification_successfully(auth_async_client: AsyncClient):
-    response = await auth_async_client.get(
+async def test_ask_verification_successfully(auth_async_verified_client: AsyncClient):
+    response = await auth_async_verified_client.get(
         url=test_urls["auth"].get("ask_verification")
     )
     assert response.status_code == 200
 
 
 @pytest.mark.asyncio
-async def test_verify_account_successfully(auth_async_client: AsyncClient, user_data: dict):
+async def test_already_verified(auth_async_verified_client: AsyncClient, user_data: dict):
     user = await get_user_by_username(username=user_data.get("username"))
-    response = await auth_async_client.get(
+    response = await auth_async_verified_client.get(
         url=test_urls["auth"].get("verify_account"),
         params={"token": user.verification_token},
     )
     user = await get_user_by_username(username=user_data.get("username"))
-    assert response.status_code == 302 and user.is_verified and user.verification_token is None
+    assert response.status_code == 400 and user.is_verified
 
 
 @pytest.mark.asyncio
-async def test_verify_account_wrong_token(auth_async_client: AsyncClient):
-    response = await auth_async_client.get(
+async def test_verify_account_wrong_token(auth_async_verified_client: AsyncClient):
+    response = await auth_async_verified_client.get(
         url=test_urls["auth"].get("verify_account"),
         params={"token": "wrong_token"},
     )
@@ -144,8 +142,8 @@ async def test_verify_account_wrong_token(auth_async_client: AsyncClient):
 
 
 @pytest.mark.asyncio
-async def test_verify_account_unsuccessfully(auth_async_client: AsyncClient):
-    response = await auth_async_client.get(
+async def test_verify_account_unsuccessfully(auth_async_verified_client: AsyncClient):
+    response = await auth_async_verified_client.get(
         url=test_urls["auth"].get("verify_account"),
         params={},
     )

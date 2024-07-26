@@ -10,7 +10,9 @@ from base import Base
 
 
 class User(SQLAlchemyBaseUserTable[uuid.UUID], Base):
+    """SQLAlchemy model for the user table, representing user data in the database."""
     __tablename__ = "user"
+    __table_args__ = {'extend_existing': True}
 
     id: Mapped[UUID] = mapped_column(
         UUID(as_uuid=True), unique=True, nullable=False, primary_key=True, default=uuid.uuid4

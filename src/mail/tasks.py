@@ -8,6 +8,21 @@ from mail.mail import mail_config
 
 @celery_app.task
 def send_email(subject: str, recipients: list[str], body: str):
+    """
+    Asynchronously sends an email to the specified recipients using FastMail within a Celery task.
+
+    This function constructs an email message with the provided subject and body 
+    and sends it to the list of recipients. In case of an error during the email 
+    sending process, an error message will be logged.
+
+    Args:
+        subject (str): The subject of the email.
+        recipients (list[str]): A list of email addresses to send the email to.
+        body (str): The body of the email, formatted as HTML.
+    
+    Returns:
+        None
+    """
     logger.info(f"Sending email with subject {subject} to {recipients}")
     message = MessageSchema(
         subject=subject,

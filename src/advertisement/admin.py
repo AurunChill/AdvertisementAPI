@@ -4,6 +4,7 @@ from .models import Advertisement
 
 
 class AdvertisementAdmin(ModelView, model=Advertisement):
+    """Admin interface for managing advertisements."""
     name = "Advertisement"
     name_plural = "Advertisements"
     column_list = [
@@ -13,7 +14,6 @@ class AdvertisementAdmin(ModelView, model=Advertisement):
         "views_count",
         "position"
     ]
-
     column_labels = {
         "id": "ID",
         "title": "Title",

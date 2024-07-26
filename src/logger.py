@@ -5,12 +5,31 @@ from config import settings
 
 
 def create_log_files_if_not_exist():
+    """
+    Creates the log directory if it does not already exist.
+
+    This function checks the specified log path in the settings. If the directory 
+    does not exist, it creates the necessary directories to ensure that log files 
+    can be saved without error.
+    """
     log_settings = settings.log
     if not log_settings.LOG_PATH.exists():
         log_settings.LOG_PATH.mkdir(parents=True)
 
 
 def setup_logger(logger_name: str, filename: str = 'app.log'):
+    """
+    Sets up a logger with a file handler that rotates logs.
+
+    This function configures a logger with a specified name, setting its level 
+    to DEBUG. If the log files do not exist, it creates them. It also configures 
+    a rotating file handler that limits the size of the log file and keeps a 
+    backup count of previous log files.
+
+    Args:
+        logger_name (str): The name of the logger to be created
+        filename (str, optional): The name of the log file. Defaults to 'app.log'.
+    """
     logger = logging.getLogger(logger_name)
     logger.setLevel(logging.DEBUG)
 
@@ -33,6 +52,15 @@ def setup_logger(logger_name: str, filename: str = 'app.log'):
 
 
 def clear_log_files():
+    """
+    Clears all log files in the specified log directory.
+
+    Parameters:
+        None
+
+    Returns:
+        None
+    """
     log_settings = settings.log
     for file in log_settings.LOG_PATH.glob('*.log'):
         with open (file, 'w') as f:

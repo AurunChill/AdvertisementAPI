@@ -17,10 +17,10 @@ if [ "$current_file_count" -gt "$initial_file_count" ]; then
       sed -i '1iimport fastapi_users_db_sqlalchemy.generics' "$file"
     fi
   done
-  # Upgrade the database to the latest migration
-  alembic -c alembic.ini upgrade head
-else
-  echo "No new migration file added. Skipping upgrade and import insertion."
 fi
-# Start the Gunicorn server
-exec gunicorn main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind=0.0.0.0:8080
+# Upgrade the database to the latest migration
+alembic -c alembic.ini upgrade head
+# Start the Gunicorn server in the background
+gunicorn main:app --worker-class uvicorn.workers.UvicornWorker --bind=0.0.0.0:8080 &
+# Start the Celery worker
+celery -A tasks_celery.celery_app worker --loglevel=info

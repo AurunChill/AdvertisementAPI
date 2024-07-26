@@ -4,6 +4,7 @@ from user.models import User
 
 
 class UserAdmin(ModelView, model=User):
+    """Admin view for managing user data in the admin interface."""
     name='User'
     name_plural='Users'
     column_list = [
@@ -15,7 +16,6 @@ class UserAdmin(ModelView, model=User):
         "is_superuser",
         "is_verified",
     ]
-
     form_create_rules = [
         "username", 
         "email", 
@@ -24,7 +24,6 @@ class UserAdmin(ModelView, model=User):
         "is_superuser", 
         "is_verified"
     ]
-
     column_labels = {
         "id": "ID",
         "username": "Username",
@@ -34,7 +33,6 @@ class UserAdmin(ModelView, model=User):
         "is_superuser": "Superuser",
         "is_verified": "Verified",
     }
-
     form_choices = {
         'is_active': [
             (True, 'Active'),

@@ -38,32 +38,20 @@ services:
       - 5672
       - 15672
 
-  base_service:
+  app:
     build:
       context: .
     restart: always
     env_file:
       - .env
-    volumes:
-      - ./logs:/advertisement_api/logs
-
-  celery:
-    extends:
-      service: base_service
-    container_name: celery_advertisement_api
-    command: ["/bin/sh", "-c", "./docker/celery.sh"]
-    depends_on:
-      - rabbitmq
-
-  app:
-    extends:
-      service: base_service
     container_name: app_advertisement_api
     ports:
       - 8080:8080
     command: ["sh", "./docker/app.sh"]
     volumes:
       - ./migrations/versions:/advertisement_api/migrations/versions
+      - ./logs:/advertisement_api/logs
     depends_on:
       - db
       - db-test
+      - rabbitmq
