@@ -5,6 +5,9 @@ from sqlalchemy import pool
 
 from alembic import context
 
+from src.config import settings
+from src.base import Base
+
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
@@ -14,11 +17,37 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
+config = context.config
+
+if config.config_file_name is not None:
+    fileConfig(config.config_file_name)
+
+db_settings = settings.database
+test_db_settings = settings.test_database
+section = config.config_ini_section
+
+if settings.test.IS_TESTING:
+    config.set_section_option(section, "DB_USER", test_db_settings.DB_TEST_USER)
+    config.set_section_option(section, "DB_PORT", test_db_settings.DB_TEST_PORT)
+    config.set_section_option(section, "DB_PASS", test_db_settings.DB_TEST_PASS)
+    config.set_section_option(section, "DB_HOST", test_db_settings.DB_TEST_HOST)
+    config.set_section_option(section, "DB_NAME", test_db_settings.DB_TEST_NAME)
+else:
+    config.set_section_option(section, "DB_USER", db_settings.DB_USER)
+    config.set_section_option(section, "DB_PORT", db_settings.DB_PORT)
+    config.set_section_option(section, "DB_PASS", db_settings.DB_PASS)
+    config.set_section_option(section, "DB_HOST", db_settings.DB_HOST)
+    config.set_section_option(section, "DB_NAME", db_settings.DB_NAME)
+
+# Interpret the config file for Python logging.
+# This line sets up loggers basically.
+
+
 # add your model's MetaData object here
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = None
+target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
