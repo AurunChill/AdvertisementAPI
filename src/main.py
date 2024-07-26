@@ -1,7 +1,7 @@
 from contextlib import asynccontextmanager
 
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from sqladmin import Admin
 
 from fastapi.middleware.cors import CORSMiddleware
@@ -14,6 +14,7 @@ from logger import app_logger as logger
 from config import settings
 
 from auth.router import router as auth_router
+from auth.base_config import verify_user
 from advertisement.router import router as advertisement_router
 
 
@@ -67,6 +68,7 @@ app.include_router(
     advertisement_router,
     tags=["Advertisement"],
     prefix=f"/api/v{settings.api.API_VERSION}/advertisement",
+    dependencies=[Depends(verify_user)]
 )
 
 

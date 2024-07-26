@@ -14,6 +14,7 @@ from sqlalchemy.engine.interfaces import ExecutionContext
 from config import settings
 from logger import db_query_logger
 from user.models import User
+from fixtures.loader import load_data_from_csv
 
 
 test_db_settings = settings.test_database
@@ -63,3 +64,7 @@ async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
 
 async def get_user_db(session: AsyncSession = Depends(get_async_session)):
     yield SQLAlchemyUserDatabase(session, User)
+
+
+async def load_data():
+    await load_data_from_csv(file_path=settings.fixtures.FIXTURES_PATH / "data" / "advertisements.csv")

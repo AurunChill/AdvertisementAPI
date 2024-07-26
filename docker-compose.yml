@@ -4,7 +4,7 @@ services:
   db:
     image: postgres:16
     restart: always
-    container_name: db_avertisement_api
+    container_name: db_advertisement_api
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
@@ -18,7 +18,7 @@ services:
 
   db-test:
     image: postgres:16
-    container_name: test_db_avertisement_api
+    container_name: test_db_advertisement_api
     environment:
       POSTGRES_DB: ${DB_TEST_NAME}
       POSTGRES_USER: ${DB_TEST_USER}
@@ -29,3 +29,41 @@ services:
       - "${DB_TEST_PORT}:5432"
     env_file:
       - .env
+
+  rabbitmq:
+    image: rabbitmq:3.13.4-management
+    restart: always
+    container_name: rabbitmq_advertisement_api
+    expose:
+      - 5672
+      - 15672
+
+  base_service:
+    build:
+      context: .
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./logs:/advertisement_api/logs
+
+  celery:
+    extends:
+      service: base_service
+    container_name: celery_advertisement_api
+    command: ["/bin/sh", "-c", "./docker/celery.sh"]
+    depends_on:
+      - rabbitmq
+
+  app:
+    extends:
+      service: base_service
+    container_name: app_advertisement_api
+    ports:
+      - 8080:8080
+    command: ["sh", "./docker/app.sh"]
+    volumes:
+      - ./migrations/versions:/advertisement_api/migrations/versions
+    depends_on:
+      - db
+      - db-test

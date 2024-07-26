@@ -42,4 +42,5 @@ def clear_log_files():
 clear_log_files()
 app_logger = setup_logger(logger_name='AppLogger')
 db_query_logger = setup_logger(logger_name='DBQueryLogger', filename='db.log')
+celery_logger = setup_logger(logger_name='CeleryLogger', filename='celery.log')
 test_logger = setup_logger(logger_name='TestLogger', filename='test.log')

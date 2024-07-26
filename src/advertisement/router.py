@@ -11,7 +11,6 @@ from advertisement.service import (
 )
 
 
-
 router = APIRouter()
 
 

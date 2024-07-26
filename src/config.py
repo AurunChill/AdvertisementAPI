@@ -60,6 +60,22 @@ class TestSettings(EnvSettings):
     BASE_URL: str
 
 
+class MailSettings(EnvSettings):
+    MAIL_USERNAME: str
+    MAIL_PASSWORD: str
+    MAIL_FROM: str
+    MAIL_PORT: str
+    MAIL_SERVER: str
+    MAIL_TLS: str
+    MAIL_SSL: str
+
+
+class CelerySettings(EnvSettings):
+    CELERY_BROKER_URL: str
+    CELERY_RESULT_BACKEND: str
+
+
+
 class LoggingSettings:
     LOG_PATH = PROJECT_PATH / "logs"
 
@@ -72,9 +88,15 @@ class APISettings(EnvSettings):
     API_VERSION: int
 
 
+class FixturesSettings:
+    FIXTURES_PATH = PROJECT_PATH / "src" / "fixtures"
+
+
 class AuthSettings(EnvSettings):
     SECRET_MANAGER: str
     SECRET_JWT: str
+    VERIFY_TOKEN_EXPIRATION: int
+    VERIFY_REDIRECT: str = "http://localhost:8080/docs"
 
 
 class Settings():
@@ -83,6 +105,9 @@ class Settings():
     admin = AdminSettings()
     database = DatabaseSettings()
     middleware = MiddlewareSettings()
+    fixtures = FixturesSettings()
+    mail = MailSettings()
+    celery = CelerySettings()
     test_database = TestDatabaseSettings()
     test = TestSettings()
     log = LoggingSettings()

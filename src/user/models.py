@@ -22,6 +22,8 @@ class User(SQLAlchemyBaseUserTable[uuid.UUID], Base):
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     is_superuser: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     is_verified: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    
+    verification_token: Mapped[str | None]
 
     def __doc__(self):
         return f"User({self.id}){self.username}"
