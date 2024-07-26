@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "advertismentapi"
+version = "0.1.0"
+description = ""
+authors = ["AurunChill <aurunchill@yandex.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+alembic = "^1.13.2"
+pytest = "^8.3.2"
+fastapi = {extras = ["all"], version = "^0.111.1"}
+fastapi-users = "^13.0.0"
+python-dotenv = "^1.0.1"
+sqlalchemy = "^2.0.31"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.pytest.ini_options]
+pythonpath = [".", "src"]
+asyncio_mode="auto"
