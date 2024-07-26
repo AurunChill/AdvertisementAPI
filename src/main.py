@@ -4,9 +4,10 @@ import uvicorn
 from fastapi import FastAPI
 from sqladmin import Admin
 
-from advertisement.admin import AdvertisementAdmin
-from admin.auth_backend import AdminAuth
 from fastapi.middleware.cors import CORSMiddleware
+from admin.auth_backend import AdminAuth
+from advertisement.admin import AdvertisementAdmin
+from user.admin import UserAdmin
 
 from db import engine
 from logger import app_logger as logger
@@ -23,7 +24,7 @@ async def init_admin():
         engine=engine,
         authentication_backend=AdminAuth(secret_key=admin_settings.ADMIN_SECRET_SESSION),
     )
-    admin_views = [AdvertisementAdmin]
+    admin_views = [AdvertisementAdmin, UserAdmin]
     [admin.add_view(view) for view in admin_views]
 
 
