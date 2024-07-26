@@ -17,6 +17,12 @@ class EnvSettings(BaseSettings):
     model_config = SettingsConfigDict(env_file=str(ENV_PATH), env_file_encoding="utf-8", extra="allow")
 
 
+class AdminSettings(EnvSettings):
+    ADMIN_USERNAME: str
+    ADMIN_PASSWORD: str
+    ADMIN_SECRET_SESSION: str
+
+
 class DatabaseSettings(EnvSettings):
     DB_USER: str
     DB_PORT: str
@@ -54,10 +60,32 @@ class TestSettings(EnvSettings):
     BASE_URL: str
 
 
+class LoggingSettings:
+    LOG_PATH = PROJECT_PATH / "logs"
+
+
+class MiddlewareSettings:
+    BACKEND_CORS_ORIGINS: list[str] = []
+
+
+class APISettings(EnvSettings):
+    API_VERSION: int
+
+
+class AuthSettings(EnvSettings):
+    SECRET_MANAGER: str
+    SECRET_JWT: str
+
+
 class Settings():
+    api = APISettings()
+    auth = AuthSettings()
+    admin = AdminSettings()
     database = DatabaseSettings()
+    middleware = MiddlewareSettings()
     test_database = TestDatabaseSettings()
     test = TestSettings()
+    log = LoggingSettings()
 
 
 settings = Settings()

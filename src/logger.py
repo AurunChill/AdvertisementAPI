@@ -40,6 +40,6 @@ def clear_log_files():
 
 
 clear_log_files()
-logger = setup_logger(logger_name='AppLogger')
+app_logger = setup_logger(logger_name='AppLogger')
 db_query_logger = setup_logger(logger_name='DBQueryLogger', filename='db.log')
 test_logger = setup_logger(logger_name='TestLogger', filename='test.log')

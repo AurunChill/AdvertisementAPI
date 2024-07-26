@@ -1,6 +1,9 @@
 from typing import AsyncGenerator
 from time import time
 
+from fastapi import Depends
+from fastapi_users.db import SQLAlchemyUserDatabase
+
 from sqlalchemy import event
 from sqlalchemy.engine import Engine
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
@@ -10,6 +13,7 @@ from sqlalchemy.engine.interfaces import ExecutionContext
 
 from config import settings
 from logger import db_query_logger
+from user.models import User
 
 
 test_db_settings = settings.test_database
@@ -55,3 +59,7 @@ def after_cursor_execute(
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
     async with async_session_maker() as session:
         yield session
+
+
+async def get_user_db(session: AsyncSession = Depends(get_async_session)):
+    yield SQLAlchemyUserDatabase(session, User)
