@@ -15,7 +15,7 @@ async def get_advertisements_all() -> list[AdvertisementRead]:
         list[AdvertisementRead]: A list of AdvertisementRead objects representing all the advertisements in the database.
     """
     async with async_session_maker() as session:
-        advertisements = await session.execute(select(Advertisement))
+        advertisements = await session.execute(select(Advertisement).order_by(Advertisement.position))
         return advertisements.scalars().all()
 
 
