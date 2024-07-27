@@ -19,7 +19,7 @@ test_urls = {
         "register": "/auth/register",
         "login": "/auth/login",
         "logout": "/auth/logout",
-        "ask_verification": "/auth/ask_verification",
+        "ask_verification": "/auth/ask-verification",
         "verify_account": "/auth/verify-account",
     },
     "advertisement": {

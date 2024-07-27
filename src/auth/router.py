@@ -27,7 +27,7 @@ router.include_router(
 )
 
 
-@router.get('/ask_verification')
+@router.get('/ask-verification')
 async def ask_verification(user: User = Depends(current_user)) -> dict:
     """
     Ask for verification for the given user.

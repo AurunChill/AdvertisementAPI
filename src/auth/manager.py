@@ -27,7 +27,7 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, UUID]):
         """
         logger.debug(f"User {user.id} has registered.")
 
-    async def on_after_login(
+    async def (
             self, user: User, 
             request: Optional[Request] = None, 
             response: Optional[Response] = None
