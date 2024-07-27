@@ -2,7 +2,7 @@ from typing import AsyncGenerator
 from time import time
 
 from fastapi import Depends
-from fastapi_users.db import SQLAlchemyUserDatabase
+from fastapi_users_db_sqlalchemy import SQLAlchemyUserDatabase
 
 from sqlalchemy import event
 from sqlalchemy.engine import Engine
